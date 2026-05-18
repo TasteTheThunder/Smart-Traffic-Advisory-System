@@ -73,5 +73,12 @@ pipeline {
                 }
             }
         }
+        stage('Deploy Frontend to Netlify') {
+            steps {
+                withCredentials([string(credentialsId: 'netlify-build-hook', variable: 'NETLIFY_HOOK')]) {
+                    sh 'curl -X POST $NETLIFY_HOOK'
+                }
+            }
+        }
     }
 }
