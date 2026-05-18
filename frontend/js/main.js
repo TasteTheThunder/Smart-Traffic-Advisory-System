@@ -26,7 +26,7 @@ const routeButton = routeForm.querySelector("button[type=submit]");
 const reportButton = reportForm.querySelector("button[type=submit]");
 const resetButton = document.getElementById("reset-view");
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://smart-traffic-advisory-system.onrender.com";
 let cachedGraph = null;
 let congestionUpdated = false;
 let lastRouteRequest = null;
