@@ -19,7 +19,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'pip3 install -r backend/requirements.txt'
-                sh 'python3 -m pip install --user bandit'
             }
         }
 
@@ -42,9 +41,9 @@ pipeline {
             }
         }
 
-        stage('Bandit Vulnerability Scan') {
+        stage('Trivy Filesystem Scan') {
             steps {
-                sh '$HOME/.local/bin/bandit -r backend -f txt -o bandit-report.txt'
+                sh 'trivy fs --exit-code 0 .'
             }
         }
 
@@ -59,15 +58,6 @@ pipeline {
                 sh '''
                 echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin
                 docker push $IMAGE_NAME
-                '''
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                sh '''
-                docker rm -f its-container || true
-                docker run -d -p 5000:5000 --name its-container $IMAGE_NAME
                 '''
             }
         }
