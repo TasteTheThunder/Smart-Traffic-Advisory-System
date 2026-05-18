@@ -1,7 +1,0 @@
-organization=tastethethunder
-projectKey=TasteTheThunder_Smart-Traffic-Advisory-System
-serverUrl=https://sonarcloud.io
-serverVersion=8.0.0.87580
-dashboardUrl=https://sonarcloud.io/dashboard?id=TasteTheThunder_Smart-Traffic-Advisory-System
-ceTaskId=AZ47jKyTNjI2FOlxxqyd
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZ47jKyTNjI2FOlxxqyd
