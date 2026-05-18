@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    environment {
+        SONAR_TOKEN = credentials('sonar-token')
+        IMAGE_NAME = "its-project"
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/TasteTheThunder/Smart-Traffic-Advisory-System.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r backend/requirements.txt'
+                sh 'pip install bandit'
+            }
+        }
+
+        stage('SonarCloud Analysis') {
+            steps {
+                withSonarQubeEnv('SonarCloud') {
+                    sh '''
+                    sonar-scanner \
+                    -Dsonar.token=$SONAR_TOKEN
+                    '''
+                }
+            }
+        }
+
+        stage('Bandit Security Scan') {
+            steps {
+                sh 'bandit -r backend'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                docker rm -f its-container || true
+                docker run -d -p 5000:5000 --name its-container $IMAGE_NAME
+                '''
+            }
+        }
+    }
+}
