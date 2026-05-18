@@ -47,7 +47,7 @@ pipeline {
                 trivy fs \
                 --skip-db-update \
                 --exit-code 0 \
-                backend/ > trivy-report.txt
+                backend/ | tee trivy-report.txt
                 '''
             }
         }
